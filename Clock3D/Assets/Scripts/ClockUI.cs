@@ -18,16 +18,17 @@ public class ClockUI : MonoBehaviour {
     private DateTime timeCheck;
 
     private void Awake() {
-        hourHandTransform = transform .Find("HourHand");
-        minuteHandTransform = transform.Find("MinuteHand");
-        secondHandTransform = transform.Find("SecondHand");
+       
     }
 
 
     // Start is called before the first frame update
     void Start() {
+        hourHandTransform = transform.Find("HourHand");
+        minuteHandTransform = transform.Find("MinuteHand");
+        secondHandTransform = transform.Find("SecondHand");
         timeCheck = DateTime.Now;
-        tick = timeCheck.Ticks;
+        tick = timeCheck.Millisecond;
         second = timeCheck.Second;
         minute = timeCheck.Minute;
         hour = timeCheck.Hour % 12;
@@ -39,7 +40,7 @@ public class ClockUI : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         timeCheck = DateTime.Now;
-        tick = timeCheck.Ticks;
+        tick = timeCheck.Millisecond;
         if (tickMode) {
             if (second != timeCheck.Second) {
                 second = timeCheck.Second;
@@ -52,16 +53,19 @@ public class ClockUI : MonoBehaviour {
             }
         }
         else {
-            if (tick != timeCheck.Ticks) {
-                secondHandTransform.eulerAngles = new Vector3(0, 0, -(second / 60 + tick / 6000) * 360f);
+           
+                
                 if (second != timeCheck.Second) {
+                     second = timeCheck.Second;
                     minuteHandTransform.eulerAngles = new Vector3(0, 0, -(minute / 60) * 360f);
                     if (minute != timeCheck.Minute) {
-                        hourHandTransform.eulerAngles = new Vector3(0, 0, -(hour / 12 + minute / 720) * 360f);
+                    minute = timeCheck.Minute;
+                    minuteHandTransform.eulerAngles = new Vector3(0, 0, -(minute / 60) * 360f);
+                    hourHandTransform.eulerAngles = new Vector3(0, 0, -(hour / 12 + minute / 720) * 360f);
                     }
                 }
-            }
-            
+            secondHandTransform.eulerAngles = new Vector3(0, 0, -(second / 60 + tick / 60000) * 360f);
+
         }
 
     }
